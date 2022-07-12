@@ -4,8 +4,9 @@ import NoteContext from "./NoteContext";
 
 const NoteState = (props) => {
   const Host = "http://localhost:5000";
-  // Get All Notes
   const [notes, setNotes] = useState([]);
+
+  // Get All Notes
   const getAllNotes = async () => {
     try {
       const response = await axios.get(`${Host}/api/notes/getnotes`, {
@@ -19,13 +20,32 @@ const NoteState = (props) => {
       console.error(error);
     }
   };
+
   // Add a Note
+  const addNote = async (newNote) => {
+    let data = {}
+    if(newNote.title) data.title = newNote.title
+    if(newNote.description) data.description = newNote.description
+    if(newNote.tag) data.tag = newNote.tag
+    try {
+      const response = await axios.post(`${Host}/api/notes/addnote`, data,{
+        headers: {
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJjNWQ0NDI5M2E4NDdhZWZmZjgwNDM4In0sImlhdCI6MTY1NzIwNjczNH0.oAZb3rKX6XWjxfSzZDiNDl2dKDMojf8jaewtszAMfQg",
+        },
+      });
+      console.log("addadta",response)
+      if(response.status === 200) setNotes(notes.concat(response.data))
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   // Edit a Note
 
-  // Delete a Note
+  // Delete a Note  
   return (
-    <NoteContext.Provider value={{ notes, getAllNotes }}>
+    <NoteContext.Provider value={{ notes, getAllNotes, addNote }}>
       {props.children}
     </NoteContext.Provider>
   );

@@ -5,7 +5,6 @@ import NoteContext from "../context/notes/NoteContext";
 
 const Note = () => {
   const { getAllNotes, notes } = useContext(NoteContext);
-  console.log(notes);
   useEffect(() => {
     getAllNotes();
     // eslint-disable-next-line
