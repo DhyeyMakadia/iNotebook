@@ -23,15 +23,15 @@ const AddNote = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const formSubmit = (data) => {
-    console.log(data);
-    addNote(data)
+  const formSubmit = async (data) => {
+    const res = await addNote(data)
+    if(res.status === 200) reset()
   };
 
   return (

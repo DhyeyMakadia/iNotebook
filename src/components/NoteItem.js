@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Card } from "react-bootstrap";
+import NoteContext from "../context/notes/NoteContext";
 
 const NoteItem = (props) => {
-  const { title, description } = props;
+  const { deleteNote } = useContext(NoteContext);
+  const { title, description, id } = props;
   return (
     <div className="col-md-4 mb-3 ">
       <Card className="h-100">
@@ -11,7 +13,7 @@ const NoteItem = (props) => {
             <Card.Title>{title}</Card.Title>
             <div>
               <i className="fa fa-pencil mx-2 icon"></i>
-              <i className="fa fa-trash mx-2 icon"></i>
+              <i className="fa fa-trash mx-2 icon" onClick={()=>deleteNote(id)}></i>
             </div>
           </div>
           <Card.Text>{description}</Card.Text>

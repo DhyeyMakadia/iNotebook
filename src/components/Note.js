@@ -18,6 +18,7 @@ const Note = () => {
           return (
             <NoteItem
               key={note._id}
+              id={note._id}
               title={note.title}
               description={note.description}
               tag={note.tag}

@@ -34,8 +34,10 @@ const NoteState = (props) => {
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJjNWQ0NDI5M2E4NDdhZWZmZjgwNDM4In0sImlhdCI6MTY1NzIwNjczNH0.oAZb3rKX6XWjxfSzZDiNDl2dKDMojf8jaewtszAMfQg",
         },
       });
-      console.log("addadta",response)
-      if(response.status === 200) setNotes(notes.concat(response.data))
+      if(response.status === 200){
+        setNotes(notes.concat(response.data))
+        return response
+      } 
     } catch (error) {
       console.error(error);
     }
@@ -43,9 +45,23 @@ const NoteState = (props) => {
 
   // Edit a Note
 
-  // Delete a Note  
+  // Delete a Note
+  const deleteNote = async (id) => {
+    try {
+      const response = await axios.delete(`${Host}/api/notes/deletenote/${id}`, {
+        headers: {
+          "auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJjNWQ0NDI5M2E4NDdhZWZmZjgwNDM4In0sImlhdCI6MTY1NzIwNjczNH0.oAZb3rKX6XWjxfSzZDiNDl2dKDMojf8jaewtszAMfQg",
+        },
+      });
+      if(response.status === 200) setNotes(notes.filter((note)=>{return note._id!==id}))
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
-    <NoteContext.Provider value={{ notes, getAllNotes, addNote }}>
+    <NoteContext.Provider value={{ notes, getAllNotes, addNote, deleteNote }}>
       {props.children}
     </NoteContext.Provider>
   );
