@@ -1,13 +1,15 @@
-import React from "react";
-import AddNote from "./AddNote";
+import React, { useContext } from "react";
 import Note from "./Note";
 import { Container } from "react-bootstrap";
+import FormModal from "./FormModal";
+import ModifyNoteContext from "../context/notes/ModifyNoteContext";
 
 const Home = () => {
+  const { note } = useContext(ModifyNoteContext);
   return (
     <>
       <Container>
-        <AddNote />
+        <FormModal note={note} />
         <Note />
       </Container>
     </>
