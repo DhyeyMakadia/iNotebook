@@ -1,9 +1,11 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AuthContext from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import {ToastContext} from "./ToastContext";
 
 const AuthHandler = (props) => {
+  const {Toast} = useContext(ToastContext);
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState({});
   const Host = "http://localhost:5000";
@@ -35,6 +37,7 @@ const AuthHandler = (props) => {
         return {};
       }
     } catch (error) {
+      Toast(error.response.data.error,"error")
       console.error(error);
     }
   };
@@ -47,8 +50,10 @@ const AuthHandler = (props) => {
         localStorage.setItem("token", response.data.authtoken);
         setToken(response.data.authtoken);
         navigate("/");
+        Toast("Login Successful","success")
       }
     } catch (error) {
+      Toast(error.response.data.error,"error")
       console.error(error);
     }
   };
@@ -60,8 +65,10 @@ const AuthHandler = (props) => {
       if (response.status === 200) {
         localStorage.setItem("token", response.data.authtoken);
         navigate("/");
+        Toast("Account Created Successfully","success")
       }
     } catch (error) {
+      Toast(error.response.data.error,"error")
       console.error(error);
     }
   };
@@ -72,6 +79,7 @@ const AuthHandler = (props) => {
     setToken(null);
     setUser(null);
     navigate("/login");
+    Toast("Logout Successfully","success")
   };
 
   return (

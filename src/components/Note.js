@@ -14,7 +14,6 @@ const Note = () => {
   useEffect(() => {
     if (token) {
       getAllNotes();
-      navigate("/");
     } else {
       navigate("/login");
     }

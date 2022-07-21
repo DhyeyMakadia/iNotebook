@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useContext } from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import AuthContext from "../authentication/AuthContext";
+import { ToastContext } from "../authentication/ToastContext";
 import NoteContext from "./NoteContext";
 
 const NoteState = (props) => {
+  const { Toast } = useContext(ToastContext);
   const { token } = useContext(AuthContext);
   const Host = "http://localhost:5000";
   const [notes, setNotes] = useState([]);
@@ -19,6 +20,7 @@ const NoteState = (props) => {
       });
       setNotes(response.data);
     } catch (error) {
+      Toast(error.response.data.error,"error")
       console.error(error);
     }
   };
@@ -37,9 +39,11 @@ const NoteState = (props) => {
       });
       if (response.status === 200) {
         setNotes(notes.concat(response.data));
+        Toast("Note Added.", "success");
         return response;
       }
     } catch (error) {
+      Toast(error.response.data.error,"error")
       console.error(error);
     }
   };
@@ -64,9 +68,11 @@ const NoteState = (props) => {
         updatedNote[index].description = response.data.description;
         updatedNote[index].tag = response.data.tag;
         setNotes(updatedNote);
+        Toast("Note Updated.", "success");
         return response;
       }
     } catch (error) {
+      Toast(error.response.data.error,"error")
       console.error(error);
     }
   };
@@ -82,13 +88,16 @@ const NoteState = (props) => {
           },
         }
       );
-      if (response.status === 200)
+      if (response.status === 200) {
         setNotes(
           notes.filter((note) => {
             return note._id !== id;
           })
         );
+        Toast("Note Deleted.", "success");
+      }
     } catch (error) {
+      Toast(error.response.data.error,"error")
       console.error(error);
     }
   };

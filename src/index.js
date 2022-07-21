@@ -7,18 +7,21 @@ import App from "./App";
 import "./index.css";
 import AuthHandler from "./context/authentication/AuthHandler";
 import { BrowserRouter as Router } from "react-router-dom";
+import Toastifier from "./context/authentication/ToastContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Router>
-      <AuthHandler>
-        <NoteState>
-          <ModifyNote>
-            <App />
-          </ModifyNote>
-        </NoteState>
-      </AuthHandler>
+      <Toastifier>
+        <AuthHandler>
+          <NoteState>
+            <ModifyNote>
+              <App />
+            </ModifyNote>
+          </NoteState>
+        </AuthHandler>
+      </Toastifier>
     </Router>
   </React.StrictMode>
 );
